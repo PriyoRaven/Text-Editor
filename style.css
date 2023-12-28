@@ -1,0 +1,145 @@
+body {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #f0f0f0;
+}
+
+#container {
+    position: relative;
+    flex-grow: 1;
+    overflow: hidden;
+    border: 2px solid #ddd;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    outline: none;
+}
+
+.options {
+    width: 300px;
+    padding: 20px;
+    background-color: #3498db;
+    color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px, rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px, rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+    overflow-y: auto;
+    border-left: 7px solid white;
+    border-top: 7px solid white;
+    border-bottom: 7px solid white;
+    border-radius: 20px 0 0 20px;
+}
+
+.option {
+    margin-top: 15px;
+    font-size: 20px;
+    align-items: center;
+}
+
+/* Style for input elements */
+.input-group {
+    margin-bottom: 15px;
+}
+
+/* Style for buttons */
+.formid {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.inpAdd {
+    padding: 10px;
+    cursor: pointer;
+    background-color: #2ecc71;
+    color: #fff;
+    border: 3px transparent solid;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.inpAdd:hover {
+    background-color: #2ecc71;
+    border: 3px white solid;
+    box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+/* Style for draggable text */
+.draggable {
+    position: absolute;
+    background-color: none;
+    cursor: grab;
+}
+
+/* Style for edit, ok, and delete buttons */
+.editButton,
+.okButton,
+.deleteButton {
+    background-color: white;
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    opacity: 5%;
+    transition: all 0.2s ease-in-out;
+}
+
+.editButton:hover,
+.okButton:hover,
+.deleteButton:hover {
+    opacity: 100%;
+}
+
+/*the boxes*/
+#fontSelect {
+    width: 70%;
+    height: 25px;
+    border: 2px solid #ddd;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    outline: none;
+}
+
+#fontSizeInput {
+    width: 20%;
+    text-align: center;
+    align-items: center;
+    height: 25px;
+    border: 2px solid #ddd;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    outline: none;
+}
+
+#fontColorInput {
+    width: 20%;
+    text-align: center;
+    align-items: center;
+    height: 40px;
+    border: none;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    outline: none;
+}
+
+#addTextInput {
+    width: 60%;
+    align-items: center;
+    height: 25px;
+    border: 2px solid #ddd;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+    outline: none;
+}
