@@ -1,8 +1,32 @@
 const container = document.getElementById("container");
 let selectedText = null;
+let stateStack = []; // Stack to store the states
+let currentStateIndex = -1; // -1 means no state
+
+function saveState() {
+  // Clone the container's HTML and push it onto the stack
+  stateStack.push(container.innerHTML);
+  // Update the current state index
+  currentStateIndex = stateStack.length - 1;
+}
+
+function undo() {
+  if (currentStateIndex > 0) {
+    currentStateIndex--;
+    container.innerHTML = stateStack[currentStateIndex];
+  }
+}
+
+function redo() {
+  if (currentStateIndex < stateStack.length - 1) {
+    currentStateIndex++;
+    container.innerHTML = stateStack[currentStateIndex];
+  }
+}
 
 // Add event listener for font family change
 document.getElementById("fontSelect").addEventListener("change", (e) => {
+  saveState();
   document.querySelectorAll(".draggable[selected]").forEach((element) => {
     element.style.fontFamily = e.target.value;
   });
@@ -10,6 +34,7 @@ document.getElementById("fontSelect").addEventListener("change", (e) => {
 
 // Add event listener for font size change
 document.getElementById("fontSizeInput").addEventListener("input", (e) => {
+  saveState();
   document.querySelectorAll(".draggable[selected]").forEach((element) => {
     element.style.fontSize = e.target.value + "px";
   });
@@ -24,6 +49,7 @@ document.getElementById("fontColorInput").addEventListener("input", (e) => {
 });
 
 function addText() {
+  saveState();
   const text = document.getElementById("addTextInput").value;
   if (text) {
     // Create a new div
@@ -74,6 +100,7 @@ function addText() {
 }
 
 function deleteText(selectedDiv) {
+  saveState();
   if (selectedDiv) {
     container.removeChild(selectedDiv);
   }
@@ -151,6 +178,7 @@ function applyEditOptions(selectedDiv) {
 }
 
 function selectText(event) {
+  saveState();
   selectedText = event.target;
   document.addEventListener("mousemove", moveText);
   document.addEventListener("mouseup", unselectText);
@@ -176,6 +204,7 @@ function editTextProperties() {
 }
 
 function unselectText() {
+  saveState();
   selectedText = null;
   document.removeEventListener("mousemove", moveText);
   document.removeEventListener("mouseup", unselectText);
