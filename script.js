@@ -1,211 +1,123 @@
-const container = document.getElementById("container");
-let selectedText = null;
-let stateStack = []; // Stack to store the states
-let currentStateIndex = -1; // -1 means no state
+let zIndexCounter = 1; // for z-index of text container
+let stateStack = []; // for saving the state
+let currentStateIndex = -1; // for current state
 
+// for saving the current state
 function saveState() {
-  // Clone the container's HTML and push it onto the stack
-  stateStack.push(container.innerHTML);
-  // Update the current state index
-  currentStateIndex = stateStack.length - 1;
+  const container = document.getElementById("container").innerHTML;
+  stateStack = stateStack.slice(0, currentStateIndex + 1); // for removing the states after the current state
+  stateStack.push(container);
+  currentStateIndex = stateStack.length - 1; // for updating the current state index
 }
 
+// this is the undo function
 function undo() {
   if (currentStateIndex > 0) {
     currentStateIndex--;
-    container.innerHTML = stateStack[currentStateIndex];
+    updateContainerState();
   }
 }
 
+// this is the redo function
 function redo() {
   if (currentStateIndex < stateStack.length - 1) {
     currentStateIndex++;
-    container.innerHTML = stateStack[currentStateIndex];
+    updateContainerState();
   }
 }
 
-// Add event listener for font family change
-document.getElementById("fontSelect").addEventListener("change", (e) => {
+// this function is for updating the container state
+function updateContainerState() {
+  const container = document.getElementById("container");
+  container.innerHTML = stateStack[currentStateIndex];
+  document.querySelectorAll(".text-box").forEach((element) => {
+    makeTextDraggable(element);
+  });
+}
+
+// this function is for making the text append to the canva or container
+function addText() {
+  const text = document.getElementById("addText").value;
+  if (!text) return;
+
+  const textElement = document.createElement("div");
+  textElement.classList.add("text-box");
+  textElement.innerHTML = text;
+  textElement.style.zIndex = zIndexCounter++;
+  textElement.setAttribute("contenteditable", "true"); // for making the text editable
+  document.getElementById("container").appendChild(textElement); // for appending the text to the container
+
+  makeTextDraggable(textElement);
+
   saveState();
-  document.querySelectorAll(".draggable[selected]").forEach((element) => {
+}
+
+// this function is for making the text draggable
+function makeTextDraggable(element) {
+  let offsetX,
+    offsetY,
+    isDragging = false;
+
+  element.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    offsetX = e.clientX - element.getBoundingClientRect().left;
+    offsetY = e.clientY - element.getBoundingClientRect().top;
+  });
+
+  // for moving the text
+  document.addEventListener("mousemove", (e) => {
+    if (isDragging) {
+      const x = e.clientX - offsetX;
+      const y = e.clientY - offsetY;
+
+      element.style.left = `${x}px`;
+      element.style.top = `${y}px`;
+    }
+  });
+
+  // for saving the state after moving the text
+  document.addEventListener("mouseup", () => {
+    if (isDragging) {
+      isDragging = false;
+
+      saveState();
+    }
+  });
+}
+
+// for deleting the text
+document.getElementById("fontSelector").addEventListener("change", (e) => {
+  document.querySelectorAll(".text-box[selected]").forEach((element) => {
     element.style.fontFamily = e.target.value;
   });
-});
-
-// Add event listener for font size change
-document.getElementById("fontSizeInput").addEventListener("input", (e) => {
   saveState();
-  document.querySelectorAll(".draggable[selected]").forEach((element) => {
-    element.style.fontSize = e.target.value + "px";
-  });
 });
 
-// Add event listener for font color change
-document.getElementById("fontColorInput").addEventListener("input", (e) => {
-  const selectedText = document.querySelector(".draggable[selected]");
+// for changing the font size
+document.getElementById("fontSizeSelector").addEventListener("input", (e) => {
+  document.querySelectorAll(".text-box[selected]").forEach((element) => {
+    element.style.fontSize = `${e.target.value}px`;
+  });
+  saveState();
+});
+
+// for changing the font color
+document.getElementById("fontColorSelector").addEventListener("input", (e) => {
+  const selectedText = document.querySelector(".text-box[selected]");
   if (selectedText) {
     selectedText.style.color = e.target.value;
   }
 });
 
-function addText() {
-  saveState();
-  const text = document.getElementById("addTextInput").value;
-  if (text) {
-    // Create a new div
-    const newText = document.createElement("div");
-    newText.innerText = text;
-    newText.classList.add("draggable");
-    newText.style.position = "absolute";
-    newText.style.left = "10px";
-    newText.style.top = "10px";
-    newText.style.fontFamily = document.getElementById("fontSelect").value;
-    newText.style.fontSize =
-      document.getElementById("fontSizeInput").value + "px";
-    newText.style.color = document.getElementById("fontColorInput").value;
-    newText.setAttribute("contenteditable", "true");
-
-    // Add an Edit button to the div
-    const editButton = document.createElement("button");
-    editButton.classList.add("editButton");
-    editButton.innerText = "✏️";
-    editButton.setAttribute("contenteditable", "false");
-    editButton.addEventListener("click", () => openEditOptions(newText));
-
-    // Add an OK button to the div
-    const okButton = document.createElement("button");
-    okButton.classList.add("okButton");
-    okButton.innerText = "✅";
-    okButton.setAttribute("contenteditable", "false");
-    okButton.style.display = "none"; // Initially hidden
-    okButton.addEventListener("click", () => closeEditOptions(newText));
-
-    // Add a Delete button to the div
-    const deleteButton = document.createElement("button");
-    deleteButton.classList.add("deleteButton");
-    deleteButton.innerText = "🗑️";
-    deleteButton.setAttribute("contenteditable", "false");
-    deleteButton.addEventListener("click", () => deleteText(newText));
-
-    newText.appendChild(editButton);
-    newText.appendChild(okButton);
-    newText.appendChild(deleteButton); // Add the delete button to the div
-    newText.addEventListener("mousedown", selectText);
-
-    // Flag to indicate whether the div is currently being edited
-    newText.editing = false;
-
-    container.appendChild(newText);
-  }
-}
-
-function deleteText(selectedDiv) {
-  saveState();
-  if (selectedDiv) {
-    container.removeChild(selectedDiv);
-  }
-}
-
-function openEditOptions(selectedDiv) {
-  const fontSizeInput = document.getElementById("fontSizeInput");
-  const fontColorInput = document.getElementById("fontColorInput");
-  const fontSelect = document.getElementById("fontSelect");
-  const okButton = selectedDiv.querySelector("button:nth-child(2)");
-  const editButton = selectedDiv.querySelector("button:first-child");
-
-  // Set initial values based on the selected div
-  fontSizeInput.value = parseInt(selectedDiv.style.fontSize);
-  fontColorInput.value = selectedDiv.style.color;
-  fontSelect.value = selectedDiv.style.fontFamily;
-
-  // Show the OK button
-  okButton.style.display = "inline";
-
-  // Set the editing flag to true
-  selectedDiv.editing = true;
-
-  // Hide the Edit button
-  editButton.style.display = "none";
-
-  // Listen for changes and apply them in real-time
-  function applyChanges() {
-    if (selectedDiv.editing) {
-      applyEditOptions(selectedDiv);
-    }
-  }
-
-  // Add event listeners for changes
-  fontSizeInput.addEventListener("input", applyChanges);
-  fontColorInput.addEventListener("input", applyChanges);
-  fontSelect.addEventListener("input", applyChanges);
-
-  // Add a click event listener to the OK button
-  okButton.addEventListener("click", () =>
-    closeEditOptions(selectedDiv, applyChanges, editButton)
-  );
-}
-
-function closeEditOptions(selectedDiv, applyChanges, editButton) {
-  const okButton = selectedDiv.querySelector("button:nth-child(2)");
-
-  // Hide the OK button
-  okButton.style.display = "none";
-
-  // Set the editing flag to false
-  selectedDiv.editing = false;
-
-  // Show the Edit button
-  editButton.style.display = "inline";
-
-  // Remove event listeners
-  const fontSizeInput = document.getElementById("fontSizeInput");
-  const fontColorInput = document.getElementById("fontColorInput");
-  const fontSelect = document.getElementById("fontSelect");
-
-  fontSizeInput.removeEventListener("input", applyChanges);
-  fontColorInput.removeEventListener("input", applyChanges);
-  fontSelect.removeEventListener("input", applyChanges);
-
-  // This is to apply changes one more time after removing listeners to finalize
-  applyChanges();
-}
-
-function applyEditOptions(selectedDiv) {
-  selectedDiv.style.fontSize =
-    document.getElementById("fontSizeInput").value + "px";
-  selectedDiv.style.color = document.getElementById("fontColorInput").value;
-  selectedDiv.style.fontFamily = document.getElementById("fontSelect").value;
-}
-
-function selectText(event) {
-  saveState();
-  selectedText = event.target;
-  document.addEventListener("mousemove", moveText);
-  document.addEventListener("mouseup", unselectText);
-}
-
-function moveText(event) {
+// for deleting the text
+document.getElementById("container").addEventListener("click", (e) => {
+  document.querySelectorAll(".text-box").forEach((element) => {
+    element.removeAttribute("selected");
+  });
+  const selectedText = e.target.closest(".text-box");
   if (selectedText) {
-    selectedText.style.left = event.clientX - container.offsetLeft + "px";
-    selectedText.style.top = event.clientY - container.offsetTop + "px";
+    selectedText.setAttribute("selected", true);
+    document.getElementById("fontColorSelector").value =
+      selectedText.style.color || "#000000";
   }
-}
-
-function editTextProperties() {
-  if (selectedText) {
-    const fontSizeInput = document.getElementById("fontSizeInput");
-    const fontColorInput = document.getElementById("fontColorInput");
-    const fontSelect = document.getElementById("fontSelect");
-
-    selectedText.style.fontSize = fontSizeInput.value + "px";
-    selectedText.style.color = fontColorInput.value;
-    selectedText.style.fontFamily = fontSelect.value;
-  }
-}
-
-function unselectText() {
-  saveState();
-  selectedText = null;
-  document.removeEventListener("mousemove", moveText);
-  document.removeEventListener("mouseup", unselectText);
-}
+});

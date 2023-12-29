@@ -2,58 +2,65 @@
 <html lang="en">
 
 <head>
-    <!-- metas -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- tab title -->
     <title>Text Editor</title>
-
-    <!-- styles -->
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
-    <!-- main container -->
     <div id="container"></div>
+    <div id="options">
 
-    <!-- all the functions go here -->
-    <div class="options">
+        <!-- redo and undo -->
         <div class="option unre">
             <button class="undo" onclick="undo()">Undo</button>
             <button class="redo" onclick="redo()">Redo</button>
         </div>
+
+        <!-- fonts -->
         <div class="option">
-            <label for="fontSelect">Font:</label>
-            <select id="fontSelect">
-                <option value="Arial, sans-serif">Arial</option>
-                <option value="Times New Roman, serif">Times New Roman</option>
-                <option value="Courier New, monospace">Courier New</option>
-                <option value="Brush Script MT, cursive">Brush Script MT</option>
-                <option value="Impact, fantasy">Impact</option>
+            <label class="font" for="fontSelector">Font:</label>
+            <select id="fontSelector">
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Palatino Linotype">Palatino Linotype</option>
+                <option value="Comic Sans MS">Comic Sans MS</option>
+                <option value="Impact">Impact</option>
+                <option value="Lucida Console">Lucida Console</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Trebuchet MS">Trebuchet MS</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Tahoma">Tahoma</option>
             </select>
         </div>
+
+        <!-- fontSize -->
         <div class="option">
-            <label for="fontSizeInput">Font Size:</label>
-            <input type="number" id="fontSizeInput" value="16" min="1">
+            <label class="font" for="fontSizeSelector">Font Size:</label>
+            <input type="number" id="fontSizeSelector" value="16" min="1" />
         </div>
-        <div class="option">
-            <label for="fontColorInput">Font Color:</label>
-            <input type="color" id="fontColorInput" value="#000000">
+
+        <!-- fontColor -->
+        <div class="option chooseColor">
+            <label class="font" for="fontColorSelector">Font Color:</label>
+            <input type="color" id="fontColorSelector" value="#b3b3b3" />
         </div>
+
+        <!-- AddNewText -->
         <div class="option">
-            <label for="addTextInput">Add Text:</label>
-            <input type="text" id="addTextInput">
-            <div class="formid">
+            <label class="font" for="addText">Add Text:</label>
+            <input type="text" id="addText" />
+            <div class="addbtn">
                 <button class="inpAdd" onclick="addText()">Add</button>
             </div>
         </div>
+
     </div>
 
-    <!-- scripts -->
-    <script src="./script.js"></script>
-
 </body>
+
+<script src="script.js"></script>
 
 </html>

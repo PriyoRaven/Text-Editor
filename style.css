@@ -4,7 +4,7 @@ body {
     display: flex;
     height: 100vh;
     overflow: hidden;
-    background-color: #f0f0f0;
+    background-color: #ffffff;
 }
 
 #container {
@@ -19,7 +19,14 @@ body {
     outline: none;
 }
 
-.options {
+/* dropdown */
+
+option {
+    background-color: #3498db;
+    color: #fff;
+}
+
+#options {
     width: 300px;
     padding: 20px;
     background-color: #3498db;
@@ -33,23 +40,20 @@ body {
 }
 
 .option {
-    margin-top: 15px;
+    margin-left: 20px;
+    margin-top: 20px;
     font-size: 20px;
     align-items: center;
+    outline: none;
 }
 
-/* Style for input elements */
-.input-group {
-    margin-bottom: 15px;
-}
-
-/* Style for buttons */
-.formid {
-    margin-top: 15px;
+/* addbutton */
+.addbtn {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    margin-top: 10px;
 }
 
 .inpAdd {
@@ -59,7 +63,7 @@ body {
     color: #fff;
     border: 3px transparent solid;
     border-radius: 5px;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease-in-out;
 }
 
 .inpAdd:hover {
@@ -72,113 +76,76 @@ body {
     box-shadow: none;
 }
 
-/* Style for draggable text */
-.draggable {
+/* the div or the text box in the container */
+.text-box {
     position: absolute;
-    background-color: none;
     cursor: grab;
+    background-color: none;
 }
 
-/* Style for edit, ok, and delete buttons */
-.editButton,
-.deleteButton {
-    background-color: white;
-    color: #fff;
-    border: none;
-    font-size: 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    opacity: 5%;
-    transition: all 0.2s ease-in-out;
+.option input {
+    width: 94%;
+    height: 30px;
+    padding: 5px;
+    padding-left: 15px;
+    margin-top: 2%;
+    font-size: 16px;
+    font-weight: 500;
+    color: #006eff;
+    background: rgba(255, 255, 255, 0.363);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.219);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 3px solid rgba(255, 255, 255, 0.589);
 }
 
-.okButton {
-    background-color: white;
-    color: #fff;
-    border: none;
-    font-size: 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    opacity: 100%;
-    transition: all 0.2s ease-in-out;
-}
+/* the selectors */
 
-.editButton:hover,
-.deleteButton:hover {
-    opacity: 100%;
-}
 
-/*the boxes*/
-#fontSelect {
-    width: 70%;
-    height: 25px;
-    border: 2px solid #ddd;
-    margin: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-    outline: none;
-}
-
-#fontSizeInput {
-    width: 20%;
-    text-align: center;
-    align-items: center;
-    height: 25px;
-    border: 2px solid #ddd;
-    margin: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-    outline: none;
-}
-
-#fontColorInput {
+#fontColorSelector {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     background-color: transparent;
-    width: 50px;
+    width: 55px;
     height: 50px;
     position: absolute;
-    margin-top: -0.9%;
-    margin-left: 10px;
+    margin-top: -1.5%;
     box-shadow: none;
-    border: none;
     cursor: pointer;
+    border: none;
     transition: all 0.2s ease-in-out;
     outline: none;
 }
 
-#fontColorInput:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    border-radius: 50px;
-}
-
-#fontColorInput::-webkit-color-swatch {
+#fontColorSelector::-webkit-color-swatch {
     border-radius: 50%;
-    border: 2px solid white;
+    border: 2px solid #ffffff;
 }
 
-#fontColorInput::-moz-color-swatch {
+#fontColorSelector::-moz-color-swatch {
     border-radius: 50%;
-    border: 2px solid white;
+    border: 2px solid #ffffff;
 }
 
-#addTextInput {
-    width: 60%;
+#fontSizeSelector {
+    width: 20%;
+    height: 30px;
+    padding: 0px 10px;
+    margin-top: 2%;
     align-items: center;
-    height: 25px;
-    border: 2px solid #ddd;
-    margin: 10px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-    outline: none;
+    color: #006eff;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.363);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.158);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 2px solid rgba(255, 255, 255, 0.589);
 }
 
-/*Undo and Redo*/
+/*undo and redo buttons*/
 .unre {
     display: flex;
     justify-content: center;
@@ -210,4 +177,20 @@ body {
 .undo:active,
 .redo:active {
     box-shadow: none;
+}
+
+/*font selector*/
+#fontSelector {
+    width: 80%;
+    height: 30px;
+    padding: 0px 10px;
+    margin-top: 2%;
+    color: #ffffff;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.363);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.158);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 2px solid rgba(255, 255, 255, 0.589);
 }
